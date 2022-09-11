@@ -79,15 +79,15 @@ const mutation = new GraphQLObjectType({
     name: "Mutation",
     fields: {
         //Add Client
-        addClient:{
+        addClient: {
             type: ClientType,
-            args:{
-                name:{type: GraphQLNonNull(GraphQLString)},
-                email:{type: GraphQLNonNull(GraphQLString)},
-                phone:{type: GraphQLNonNull(GraphQLString)},
+            args: {
+                name: { type: GraphQLNonNull(GraphQLString) },
+                email: { type: GraphQLNonNull(GraphQLString) },
+                phone: { type: GraphQLNonNull(GraphQLString) },
             },
-            resolve(parent, args){
-                const client =  new Client({
+            resolve(parent, args) {
+                const client = new Client({
                     name: args.name,
                     email: args.email,
                     phone: args.phone,
@@ -96,35 +96,35 @@ const mutation = new GraphQLObjectType({
             },
         },
         // Delete Client
-        deleteClient:{
+        deleteClient: {
             type: ClientType,
-            args:{
-                id:{type: GraphQLNonNull(GraphQLID)},
+            args: {
+                id: { type: GraphQLNonNull(GraphQLID) },
             },
-            resolve(parent, args){
+            resolve(parent, args) {
                 return Client.findByIdAndRemove(args.id)
             }
         },
         // Add Project
-        addProject:{
+        addProject: {
             type: ProjectType,
-            args:{
-                name: {type: GraphQLNonNull(GraphQLString)},
-                description: {type: GraphQLNonNull(GraphQLString)},
-                clientId:{type: GraphQLNonNull(GraphQLID)},
+            args: {
+                name: { type: GraphQLNonNull(GraphQLString) },
+                description: { type: GraphQLNonNull(GraphQLString) },
+                clientId: { type: GraphQLNonNull(GraphQLID) },
                 status: {
                     type: new GraphQLEnumType({
-                    name: "ProjectStatus",
-                    defaultValue:"Not Started",
-                    values:{
-                        new: {value:'Not Started'},
-                        progress: {value: 'In Progress'},
-                        completed: {value: 'Completed'},
-                    },
+                        name: "ProjectStatus",
+                        defaultValue: "Not Started",
+                        values: {
+                            new: { value: 'Not Started' },
+                            progress: { value: 'In Progress' },
+                            completed: { value: 'Completed' },
+                        },
                     }),
                 }
             },
-            resolve(parent, args){
+            resolve(parent, args) {
                 const project = new Project({
                     name: args.name,
                     description: args.description,
@@ -135,14 +135,48 @@ const mutation = new GraphQLObjectType({
             }
         },
         // Delete Project
-        deleteProject:{
+        deleteProject: {
             type: ProjectType,
-            args:{
-              id:{type:GraphQLNonNull(GraphQLID)}  
+            args: {
+                id: { type: GraphQLNonNull(GraphQLID) }
             },
-            resolve(parent, args){
+            resolve(parent, args) {
                 return Project.findByIdAndRemove(args.id)
             }
+        },
+        //Update Project
+        updateProject:{
+        type: ProjectType,
+        args: {
+        id: { type: GraphQLNonNull(GraphQLID) },
+        name: { type: (GraphQLString) },
+        description: { type: (GraphQLString) },
+        status: {
+            type: GraphQLEnumType({
+                name: "ProjectStatusUpdate",
+                values: {
+                    new: { value: 'Not Started' },
+                    progress: { value: 'In Progress' },
+                    completed: { value: 'Completed' },
+                },
+            }),
+
+        }
+    },
+    resolve(parent, args) { 
+        return Project.findByIdAndUpdate(
+            args.id,
+            {
+                $set:{
+                    name: args.name,
+                    description: args.description,
+                    status: args.status,
+                },
+            },
+            {new: true}
+            )
+    }
+
         },
     }
 
