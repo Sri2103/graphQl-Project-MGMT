@@ -12,7 +12,7 @@ const ProjectSchema = new mongoose.Schema({
         type: String,
         enum:['Not Started', 'In Progress', 'Completed'],
     },
-    clientID:{
+    clientId:{
         type: mongoose.Schema.Types.ObjectId,
         ref: 'Client',
     }

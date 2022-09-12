@@ -14,9 +14,9 @@ function AddClientModal() {
         update(cache,{
             data: {addClient}
         }){
-            const clients = cache.readQuery({query:{GET_CLIENTS}})
+            const {clients} = cache.readQuery({query:{GET_CLIENTS}})
             cache.writeQuery({
-                query:ADD_CLIENT,
+                query:GET_CLIENTS,
                 data:{clients:[...clients,addClient]}
                 }
             )
@@ -36,7 +36,12 @@ function AddClientModal() {
   return (
    <Fragment>
  
-<button type="button" className="btn btn-secondary" data-bs-toggle="modal" data-bs-target="#addClientModal">
+<button 
+type="button" 
+className="btn btn-secondary" 
+data-bs-toggle="modal" 
+data-bs-target="#addClientModal"
+>
   <div className="d-flex align-items-center">
     <FaUser className='icon' />
     <div>Add Client</div>
@@ -57,19 +62,22 @@ function AddClientModal() {
                 <label className="form-label">Name</label>
                 <input type="text" 
                 className="form-control" id="name"
-                value ={name} onChange = {(e) =>setName(e.target.value)} />
+                value ={name} 
+                onChange = {(e) =>setName(e.target.value)} />
             </div>
             <div className="mb-3">
                 <label className="form-label">Email</label>
-                <input type="text" 
+                <input type="email" 
                 className="form-control" id="email"
-                value ={email} onChange = {(e) =>setEmail(e.target.value)} />
+                value ={email} 
+                onChange = {(e) =>setEmail(e.target.value)} />
             </div>
             <div className="mb-3">
                 <label className="form-label">Phone</label>
                 <input type="text" 
                 className="form-control" id="phone"
-                value ={phone} onChange = {(e) =>setPhone(e.target.value)} />
+                value ={phone} 
+                onChange = {(e) =>setPhone(e.target.value)} />
             </div>
             <button className='btn btn-secondary'
              type='submit'
@@ -78,10 +86,6 @@ function AddClientModal() {
             </button>
         </form>
       </div>
-      {/* <div className="modal-footer">
-        <button type="button" className="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-        <button type="button" className="btn btn-primary">Save changes</button>
-      </div> */}
     </div>
   </div>
 </div>
